@@ -16,11 +16,11 @@ public interface ILoanServices {
 
     /**
      *
-     * @param loan
+     *
      * @param createLoanDto
      * @return
      */
-     Loan createNewLoan(Loan loan,CreateLoanDto createLoanDto);
+     Loan createNewLoan(CreateLoanDto createLoanDto);
 
     /**
      *

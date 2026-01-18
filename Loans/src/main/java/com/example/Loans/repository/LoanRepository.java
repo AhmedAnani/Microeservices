@@ -10,5 +10,7 @@ import java.util.Optional;
 public interface LoanRepository extends JpaRepository<Loan,Integer> {
     Optional<Loan> findByPhone(String phone);
 
+    Boolean existsByPhone(String phone);
+
 
 }

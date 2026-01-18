@@ -25,15 +25,17 @@ public class LoanServices implements ILoanServices {
 
     @Override
     public GlobalResponeDto createLoan(CreateLoanDto createLoanDto) {
-        Loan loan= loanRepository.findByPhone(createLoanDto.getPhone()).orElseThrow(()->new Founded("Loan already registered with given mobileNumber "));
-        loanRepository.save(createNewLoan(loan,createLoanDto));
+        if(loanRepository.existsByPhone(createLoanDto.getPhone())){
+            throw new Founded("phone Already have a card.");
+        }
+        loanRepository.save(createNewLoan(createLoanDto));
 
        return new GlobalResponeDto("Saved");
     }
 
     @Override
-   public  Loan createNewLoan(Loan loan,CreateLoanDto createLoanDto) {
-
+   public  Loan createNewLoan(CreateLoanDto createLoanDto) {
+        Loan loan=new Loan();
         int randomLoanNumber = 100000000 + new Random().nextInt(9000000);
         loan.setLoanNumber(String.valueOf(randomLoanNumber));
         loan.setPhone(createLoanDto.getPhone());
