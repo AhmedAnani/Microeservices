@@ -1,6 +1,6 @@
 package com.example.Loans.controller;
 
-import com.example.Loans.dto.loan.CreateLoanDto;
+import com.example.Loans.dto.loan.LoanDto;
 import com.example.Loans.dto.GlobalResponeDto;
 import com.example.Loans.dto.loan.LoanRequestDto;
 import com.example.Loans.dto.loan.LoanResponseDto;
@@ -27,9 +27,9 @@ public class LoansController {
             description = "Create loan"
     )
     @PostMapping
-    public ResponseEntity<GlobalResponeDto> createLoan(@Valid @RequestBody CreateLoanDto createLoanDto){
+    public ResponseEntity<GlobalResponeDto> createLoan(@Valid @RequestBody LoanDto loanDto){
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(loanServices.createLoan(createLoanDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(loanServices.createLoan(loanDto));
     }
 
     @Operation(
@@ -43,6 +43,21 @@ public class LoansController {
         return ResponseEntity.ok(loanServices.getLoanByPhone(loanRequestDto));
     }
 
+    @Operation(
+            summary = "Update mapping",
+            description = "Update loan by phone"
+
+    )
+    @PutMapping
+    public ResponseEntity<GlobalResponeDto> updateLoan(@Valid@RequestBody LoanDto loanDto){
+        return ResponseEntity.ok(loanServices.updateLoan(loanDto));
+    }
+
+    @Operation(
+            summary = "Delete mapping",
+            description = "Delete loan by phone"
+
+    )
     @DeleteMapping
     public ResponseEntity<GlobalResponeDto> deleteLoanByPhone(@Valid@RequestBody LoanRequestDto loanRequestDto){
         return ResponseEntity.ok(loanServices.deleteLoanByPhone(loanRequestDto));

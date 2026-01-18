@@ -3,6 +3,8 @@ package com.example.cards.services;
 import com.example.cards.Dto.CardDto;
 import com.example.cards.Dto.GlobalResponseDto;
 import com.example.cards.Dto.RequestCardDto;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface ICardServices {
     /**
@@ -21,9 +23,11 @@ public interface ICardServices {
 
     /**
      *
-     * @param updateCardDto
+     * @param dto
      * @return
      */
+    @Transactional
+    @Modifying
     GlobalResponseDto updateCard(CardDto dto);
 
     /**
@@ -31,5 +35,7 @@ public interface ICardServices {
      * @param requestCardDto
      * @return
      */
+    @Transactional
+    @Modifying
     GlobalResponseDto delete(RequestCardDto requestCardDto);
 }

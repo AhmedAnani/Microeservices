@@ -1,6 +1,6 @@
 package com.example.Loans.services.impl;
 
-import com.example.Loans.dto.loan.CreateLoanDto;
+import com.example.Loans.dto.loan.LoanDto;
 import com.example.Loans.dto.GlobalResponeDto;
 
 import com.example.Loans.dto.loan.LoanRequestDto;
@@ -14,8 +14,6 @@ import com.example.Loans.services.ILoanServices;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Random;
-
 @Service@AllArgsConstructor
 public class LoanServices implements ILoanServices {
 
@@ -24,27 +22,17 @@ public class LoanServices implements ILoanServices {
     private final LoanMapper loanMapper;
 
     @Override
-    public GlobalResponeDto createLoan(CreateLoanDto createLoanDto) {
-        if(loanRepository.existsByPhone(createLoanDto.getPhone())){
+    public GlobalResponeDto createLoan(LoanDto loanDto) {
+        if(loanRepository.existsByPhone(loanDto.getPhone())){
             throw new Founded("phone Already have a card.");
         }
-        loanRepository.save(createNewLoan(createLoanDto));
+        loanRepository.save(loanMapper.createNewLoan(loanDto));
 
-       return new GlobalResponeDto("Saved");
+       return new GlobalResponeDto("Loan created successfully.");
     }
 
-    @Override
-   public  Loan createNewLoan(CreateLoanDto createLoanDto) {
-        Loan loan=new Loan();
-        int randomLoanNumber = 100000000 + new Random().nextInt(9000000);
-        loan.setLoanNumber(String.valueOf(randomLoanNumber));
-        loan.setPhone(createLoanDto.getPhone());
-        loan.setLoanType(createLoanDto.getLoanType());
-        loan.setTotalLoan(createLoanDto.getTotalLoan());
-        loan.setAmountPaid(0);
-        loan.setOutstandingAmount(createLoanDto.getOutstandingAmount());
-        return loan;
-    }
+
+
 
     @Override
     public LoanResponseDto getLoanByPhone(LoanRequestDto loanRequestDto) {
@@ -52,6 +40,16 @@ public class LoanServices implements ILoanServices {
 
 
         return loanMapper.getLoanByPhone(loan);
+    }
+
+    @Override
+    public GlobalResponeDto updateLoan(LoanDto loanDto) {
+            Loan loan=loanRepository.findByPhone(loanDto.getPhone())
+                    .orElseThrow(()->new NotFound("Loan not found."));
+
+            loanRepository.save(loanMapper.updateLoan(loan,loanDto));
+
+        return new GlobalResponeDto("Loan updated successfully.");
     }
 
     @Override

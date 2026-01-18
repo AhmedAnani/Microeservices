@@ -1,26 +1,19 @@
 package com.example.Loans.services;
 
-import com.example.Loans.dto.loan.CreateLoanDto;
+import com.example.Loans.dto.loan.LoanDto;
 import com.example.Loans.dto.GlobalResponeDto;
 import com.example.Loans.dto.loan.LoanRequestDto;
 import com.example.Loans.dto.loan.LoanResponseDto;
-import com.example.Loans.model.Loan;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface ILoanServices {
     /**
      *
-     * @param createLoanDto
+     * @param loanDto
      * @return GlobalRespone
      */
-     GlobalResponeDto createLoan(CreateLoanDto createLoanDto);
-
-    /**
-     *
-     *
-     * @param createLoanDto
-     * @return
-     */
-     Loan createNewLoan(CreateLoanDto createLoanDto);
+     GlobalResponeDto createLoan(LoanDto loanDto);
 
     /**
      *
@@ -31,8 +24,18 @@ public interface ILoanServices {
 
     /**
      *
+     * @param loanDto
+     * @return
+     */
+    @Transactional
+    @Modifying
+    GlobalResponeDto updateLoan(LoanDto loanDto);
+    /**
+     *
      * @param loanRequestDto
      * @return
      */
+    @Transactional
+    @Modifying
     GlobalResponeDto deleteLoanByPhone(LoanRequestDto loanRequestDto);
 }
